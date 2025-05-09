@@ -1,6 +1,215 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
+
+
 /******* Change Box Model ***************/
 *,
 *:before,
 *:after {
   box-sizing: border-box;
 }
+
+body {
+  font-family: "Rubik", sans-serif;
+  background-image: url("../images/site/checkerboard.jpg");
+  
+  background-size: auto;
+  
+  background-position: top left;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+#wrapper {
+  /* position: absolute; */
+  /* top: 50%;
+  left: 50%; */
+  /* transform: translate(-50%, -50%); */
+  background-color: white;
+  outline: solid #00ccff 5px;
+  border-radius: 10px;
+  box-shadow: 0 0 0 4px #00ccff;
+  width: 80vw;
+  min-height: 90vh; 
+  padding: 2rem;
+  box-sizing: border-box;
+  overflow: auto;
+  margin-top: 5vh;
+  margin-bottom: 5vh;
+}
+
+
+
+header {
+  width: 100%;
+  height: 10vh;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.siteName a{
+  font-size: 200%;
+  text-decoration: none;
+  color: black;
+}
+
+#tools a {
+  font-size: 100%;
+  text-decoration: none;
+  color: black;
+}
+
+nav {
+  width: 100%;
+  height: 4vh;
+  background-color: rgb(46, 46, 46);
+}
+
+#nav-content {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 100%;
+  font-size: 3vh;
+}
+
+#nav-content li {
+  color: white;
+  text-decoration: none;
+  padding: 0 20px;
+  cursor: pointer;
+}
+
+#delorean-hero {
+  height: 60vh;
+  width: 100%;
+  background-image: url("../images/vehicles/delorean.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 2rem;
+}
+
+#hero-ad {
+  margin-left: 15%;
+  background-color: rgba(255, 255, 255, 0.623);
+  color: #00ccff;
+  font-size: 1.7rem;
+  width: 300px; 
+  height: 40vh;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  float: left;
+  box-sizing: border-box;
+  padding: 1rem;
+}
+
+#hero-ad h2 {
+  margin-top: 0;
+}
+
+#hero-ad ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+#hero-ad li {
+  margin: 0.5rem 0;
+}
+
+
+
+#own-btn {
+  background-color: #00ccff;
+  color: black;
+  padding: 0.75rem 1.5rem;
+  font-weight: bold;
+  border-radius: 8px;
+  margin-top: 1rem;
+  display: inline-block;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#own-btn:hover {
+  background-color: #e0f7ff;
+}
+
+#content {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 3vh;
+}
+
+#content div h3 {
+  font-size: 1.5rem;
+}
+
+#reviews div, #upgrades div {
+  width: 50%;
+}
+
+#reviews {
+  padding: 1rem;
+  font-size: 1.5rem;
+}
+
+#reviews li {
+  padding: 1rem;
+}
+
+
+#upgrades img {
+  width: 60px;
+  height: 60px;
+  border: 2px solid #00ccff;
+  padding: 5px;
+  background-color: white;
+}
+
+#upgrades {
+  display: grid;
+  grid-template-columns: repeat(2, 15vw);
+  gap: 2vw;
+  width: 50%;
+  align-items: stretch;
+}
+
+.upgrade {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  border: 2px solid #00ccff;
+  background-color: black;
+  border-radius: 10px;
+  padding-left: 7vw;
+  padding-right: 7vw;
+  padding-top: 2vh;
+  padding-bottom: 2vh;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+#content {
+  justify-content: space-around;
+  text-align: center;
+}
+
