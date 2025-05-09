@@ -213,3 +213,39 @@ nav {
   text-align: center;
 }
 
+@media (max-width: 600px) {
+  #content {
+    display: grid;
+    grid-template-rows: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+    gap: 0px;
+    margin: 0 auto;
+  }
+
+  #upgrades {
+    display: grid;
+    grid-template-columns: repeat(2, 40vw);
+    gap: 2vw;
+    width: 100%;
+    align-items: stretch;
+  }
+
+  #wrapper {
+    background-color: white;
+    outline: none;
+    border: none;
+    width: 100vw;
+    min-height: 100vh; 
+
+
+  }
+
+  body {
+    background-image: none;
+    margin: 0 auto;
+  }
+
+  #hero-ad {
+    height: 50vh;
+  }
+}
