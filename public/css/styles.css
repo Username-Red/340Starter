@@ -197,6 +197,7 @@ nav {
   text-align: center;
   border: 2px solid #00ccff;
   background-color: black;
+  color: white;
   border-radius: 10px;
   padding-left: 7vw;
   padding-right: 7vw;
@@ -206,6 +207,8 @@ nav {
   width: 100%;
   box-sizing: border-box;
 }
+
+
 
 
 #content {
