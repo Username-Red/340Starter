@@ -208,6 +208,11 @@ nav {
   box-sizing: border-box;
 }
 
+.upgrade a {
+  color: white;
+  text-decoration: none;
+}
+
 
 
 
