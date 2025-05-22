@@ -260,3 +260,20 @@ nav ul {
     height: 50vh;
   }
 }
+
+.vehicle-detail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 1rem;
+}
+
+.vehicle-detail img {
+  max-width: 100%;
+  height: auto;
+  flex: 1 1 300px;
+}
+
+.vehicle-info {
+  flex: 1 1 300px;
+}
