@@ -87,8 +87,8 @@ nav ul {
   font-size: 3vh;
 }
 
-li a {
-    text-decoration: none;
+nav li a {
+  text-decoration: none;
   color: white;
 }
 
