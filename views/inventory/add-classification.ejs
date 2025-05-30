@@ -1,0 +1,30 @@
+<h1>Add New Classification</h1>
+
+<% if (message) { %>
+  <div class="flash-message"><%= message %></div>
+<% } %>
+
+<form id="addClassificationForm" action="/inv/add-classification" method="POST">
+  <label for="classification_name">Classification Name</label>
+  <input
+    type="text"
+    id="classification_name"
+    name="classification_name"
+    pattern="^[A-Za-z0-9]+$"
+    title="Classification must not contain spaces or special characters."
+    required
+  />
+  <button type="submit">Add Classification</button>
+</form>
+
+<script>
+  // Additional client-side validation (optional)
+  document.getElementById('addClassificationForm').addEventListener('submit', function (e) {
+    const input = document.getElementById('classification_name');
+    const pattern = /^[A-Za-z0-9]+$/;
+    if (!pattern.test(input.value)) {
+      alert('Classification must not contain spaces or special characters.');
+      e.preventDefault();
+    }
+  });
+</script>

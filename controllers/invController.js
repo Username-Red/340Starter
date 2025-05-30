@@ -37,4 +37,92 @@ invCont.buildDetailView = async function (req, res, next) {
   });
 };
 
+invCont.buildManagementView = async function (req, res) {
+  let nav = await utilities.getNav()
+  req.flash("notice", "You are viewing the inventory management page.") // Optional flash
+  res.render("inventory/management", {
+    title: "Inventory Management",
+    nav,
+    message: req.flash("notice"),
+  })
+}
+
+/** Display form */
+invCont.buildAddClassification = async (req, res) => {
+  let nav = await utilities.getNav()
+  res.render("inventory/add-classification", {
+    title: "Add Classification",
+    nav,
+    message: req.flash("notice"),
+  })
+}
+
+/** Handle form submission */
+invCont.addClassification = async (req, res) => {
+  const { classification_name } = req.body
+  const insertResult = await invModel.addNewClassification(classification_name)
+
+  if (insertResult) {
+    let nav = await utilities.getNav() // updated nav with new classification
+    req.flash("notice", `Classification "${classification_name}" added.`)
+    res.render("inventory/management", {
+      title: "Inventory Management",
+      nav,
+      message: req.flash("notice"),
+    })
+  } else {
+    let nav = await utilities.getNav()
+    req.flash("notice", "Failed to add classification.")
+    res.render("inventory/add-classification", {
+      title: "Add Classification",
+      nav,
+      message: req.flash("notice"),
+    })
+  }
+}
+
+// View route handler
+invCont.buildAddInventory = async function (req, res) {
+  let nav = await utilities.getNav()
+  let classificationList = await utilities.buildClassificationList()
+  res.render("inventory/add-inventory", {
+    title: "Add New Inventory",
+    nav,
+    classificationList,
+    message: null,
+    errors: null,
+  })
+}
+
+// Post route handler
+invCont.addInventory = async function (req, res) {
+  const {
+    classification_id, inv_make, inv_model, inv_description, inv_image,
+    inv_thumbnail, inv_price, inv_year, inv_miles, inv_color
+  } = req.body
+
+  const insertResult = await invModel.addInventoryItem(
+    classification_id, inv_make, inv_model, inv_description, inv_image,
+    inv_thumbnail, inv_price, inv_year, inv_miles, inv_color
+  )
+
+  if (insertResult) {
+    req.flash("notice", `${inv_make} ${inv_model} added successfully.`)
+    res.redirect("/inv")
+  } else {
+    let nav = await utilities.getNav()
+    let classificationList = await utilities.buildClassificationList(classification_id)
+    res.render("inventory/add-inventory", {
+      title: "Add New Inventory",
+      nav,
+      classificationList,
+      message: "Sorry, the inventory item could not be added.",
+      errors: null,
+      inv_make, inv_model, inv_description, inv_image,
+      inv_thumbnail, inv_price, inv_year, inv_miles, inv_color
+    })
+  }
+}
+
+
 module.exports = invCont;
