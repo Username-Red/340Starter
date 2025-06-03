@@ -6,12 +6,13 @@ const accountController = require("../controllers/accountController")
 const utilities = require("../utilities/") 
 
 // Route to build main account view (e.g., "My Account" page)
-router.get("/", utilities.handleErrors(accountController.buildAccount))
+router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.buildAccount))
 
 // Route to build login view
 router.get("/login", utilities.handleErrors(accountController.buildLogin))
 // Registration view
 router.get("/register", utilities.handleErrors(accountController.buildRegister))
+
 // Route to process the registration data
 // Process the registration data
 router.post(
@@ -21,12 +22,12 @@ router.post(
   utilities.handleErrors(accountController.registerAccount)
 )
 
-// Process the login attempt
+// Process the login request
 router.post(
   "/login",
-  (req, res) => {
-    res.status(200).send("login process")
-  }
+  regValidate.loginRules(),
+  regValidate.checkLoginData,
+  utilities.handleErrors(accountController.accountLogin)
 )
 
 

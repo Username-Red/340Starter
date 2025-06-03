@@ -1,7 +1,8 @@
 const utilities = require("../utilities/")
 const accountModel = require("../models/account-model")
 const bcrypt = require("bcryptjs")
-
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 
 /* ****************************************
 *  Deliver login view
@@ -75,10 +76,86 @@ async function registerAccount(req, res) {
   }
 }
 
+/* ****************************************
+ *  Process login request
+ * ************************************ */
+async function accountLogin(req, res) {
+  const nav = await utilities.getNav()
+  const { account_email, account_password } = req.body
+  const accountData = await accountModel.getAccountByEmail(account_email)
+
+  if (!accountData) {
+    req.flash("notice", "Please check your credentials and try again.")
+    return res.status(400).render("account/login", {
+      title: "Login",
+      nav,
+      errors: null,
+      account_email,
+    })
+  }
+
+  try {
+    const isMatch = await bcrypt.compare(account_password, accountData.account_password)
+    if (isMatch) {
+      delete accountData.account_password
+
+      // Create JWT
+      const accessToken = jwt.sign(accountData, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: "1h", // Correct syntax for 1 hour
+      })
+
+      // Set cookie
+      res.cookie("jwt", accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", // only secure in production
+        maxAge: 3600000, // 1 hour in ms
+      })
+
+      console.log("Login successful, redirecting to /account/")
+      return res.redirect("/account/")
+    } else {
+      req.flash("notice", "Incorrect password. Please try again.")
+      return res.status(400).render("account/login", {
+        title: "Login",
+        nav,
+        errors: null,
+        account_email,
+      })
+    }
+  } catch (error) {
+    console.error("Login Error:", error)
+    req.flash("notice", "Login failed due to an unexpected error.")
+    return res.status(500).render("account/login", {
+      title: "Login",
+      nav,
+      errors: null,
+      account_email,
+    })
+  }
+}
+
+
+
+const buildAccount = async function (req, res) {
+  console.log("Account Management View Reached")
+  const nav = await utilities.getNav()
+  const message = req.flash("notice")
+  res.render("account/account-management", {
+    title: "Account Management",
+    nav,
+    message,
+    errors: null,
+  })
+}
+
+
+
 
 module.exports = {
   buildLogin,
   buildRegister,
   registerAccount,
+  accountLogin,
+  buildAccount,
 }
 
