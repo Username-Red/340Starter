@@ -35,5 +35,17 @@ router.get("/add-inventory", invController.buildAddInventory)
 router.post("/add-inventory", invController.addInventory)
 router.post("/update/", utilities.handleErrors(invController.updateInventory))
 
+// Route to handle the deletion process
+router.get("/delete/:inv_id", utilities.handleErrors(invController.buildDeleteInventoryView))
+router.post("/delete/", utilities.handleErrors(invController.deleteInventoryItem))
+
+// Admin-only route to build inventory management view
+router.get("/manage", utilities.checkAccountType, utilities.handleErrors(invController.buildManagementView))
+
+// Admin-only route to add classification
+router.get("/add-classification", utilities.checkAccountType, utilities.handleErrors(invController.buildAddClassification))
+
+
+
 
 module.exports = router

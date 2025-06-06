@@ -42,6 +42,13 @@ app.use(cookieParser())
 
 app.use(utilities.checkJWTToken)
 
+app.use((req, res, next) => {
+  res.locals.loggedin = req.session.loggedin;
+  res.locals.firstname = req.session.firstname; 
+  next();
+});
+
+
 // Express Messages Middleware
 app.use(require('connect-flash')())
 app.use(function(req, res, next){

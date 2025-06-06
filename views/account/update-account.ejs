@@ -1,0 +1,42 @@
+
+  <h1>Update Account Information</h1>
+
+  <% if (message && message.length > 0) { %>
+    <div class="notice"><%= message %></div>
+  <% } %>
+
+  <!-- Account Info Update Form -->
+  <form action="/account/update/" method="post">
+    <label for="account_firstname">First Name</label>
+    <input type="text" id="account_firstname" name="account_firstname" required value="<%= locals.account_firstname %>">
+
+    <label for="account_lastname">Last Name</label>
+    <input type="text" id="account_lastname" name="account_lastname" required value="<%= locals.account_lastname %>">
+
+    <label for="account_email">Email</label>
+    <input type="email" id="account_email" name="account_email" required value="<%= locals.account_email %>">
+
+    <input type="hidden" name="account_id" value="<%= locals.account_id %>">
+    <button type="submit">Update Account</button>
+  </form>
+
+  <!-- Password Change Form -->
+  <form action="/account/update-password" method="post">
+    <fieldset>
+      <legend>Change Password</legend>
+      <p>Enter a new password to update your current one. Passwords must be at least 12 characters and include an uppercase letter, a lowercase letter, a number, and a special character.</p>
+
+      <label for="account_password">New Password</label>
+      <input 
+        type="password" 
+        id="account_password" 
+        name="account_password" 
+        required
+        pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}" 
+        title="At least 12 characters, including upper and lowercase letters, a number, and a special character.">
+
+
+      <input type="hidden" name="account_id" value="<%= locals.account_id %>">
+      <button type="submit">Change Password</button>
+    </fieldset>
+  </form>

@@ -146,4 +146,34 @@ Util.checkJWTToken = (req, res, next) => {
   }
  }
 
+
+/* ****************************************
+ * Middleware to check if user is Employee or Admin
+ **************************************** */
+Util.checkAccountType = (req, res, next) => {
+  const token = req.cookies.jwt
+
+  if (!token) {
+    req.flash("notice", "Please log in to access that page.")
+    return res.redirect("/account/login")
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
+
+    if (decoded.account_type === "Employee" || decoded.account_type === "Admin") {
+      req.user = decoded
+      next()
+    } else {
+      req.flash("notice", "You do not have permission to access that page.")
+      return res.redirect("/account/login")
+    }
+  } catch (err) {
+    console.error("JWT verification failed:", err)
+    req.flash("notice", "Invalid session. Please log in again.")
+    return res.redirect("/account/login")
+  }
+}
+
+
 module.exports = Util

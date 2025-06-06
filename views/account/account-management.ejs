@@ -14,4 +14,15 @@
     </div>
   <% } %>
 
+  <h2>Welcome <%= account_firstname %></h2>
+
+  <!-- Update account info link for all account types -->
+  <p><a href="/account/update/">Update Account Information</a></p>
+
+  <% if (account_type === 'Employee' || account_type === 'Admin') { %>
+    <h3>Inventory Management</h3>
+    <p><a href="/inv/manage">Manage Inventory</a></p>
+  <% } %>
+
+
   <p>You're logged in</p>

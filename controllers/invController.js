@@ -231,5 +231,105 @@ invCont.updateInventory = async function (req, res, next) {
   }
 }
 
+// Deliver the delete confirmation view
+invCont.buildDeleteInventoryView = async function (req, res, next) {
+  try {
+    const inv_id = parseInt(req.params.inv_id)
+    const nav = await utilities.getNav()
+    const itemData = await invModel.getVehicleById(inv_id)
+    const name = `${itemData.inv_make} ${itemData.inv_model}`
+
+    res.render("inventory/delete-inventory", {
+      title: `Delete ${name}`,
+      nav,
+      errors: null,
+      inv_id: itemData.inv_id,
+      inv_make: itemData.inv_make,
+      inv_model: itemData.inv_model,
+      inv_year: itemData.inv_year,
+      inv_price: itemData.inv_price
+    })
+  } catch (error) {
+    next(error)
+  }
+}
+
+// Process deletion of inventory item
+invCont.deleteInventoryItem = async function (req, res, next) {
+  try {
+    const inv_id = parseInt(req.body.inv_id)
+    const deleteResult = await invModel.deleteInventoryItem(inv_id)
+
+    if (deleteResult) {
+      req.flash("notice", "The vehicle was successfully deleted.")
+      res.redirect("/inv/")
+    } else {
+      req.flash("notice", "Sorry, the delete failed.")
+      res.redirect(`/inv/delete/${inv_id}`)
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+
+invCont.editInventoryView = async function (req, res, next) {
+  const inv_id = parseInt(req.params.inv_id) // Step 1: get ID from URL
+
+  let nav = await utilities.getNav() // Step 2: get nav bar
+  const itemData = await invModel.getVehicleById(inv_id) // Step 3: get item data from DB
+  const classificationSelect = await utilities.buildClassificationList(itemData.classification_id) // Step 4: select drop-down
+  const itemName = `${itemData.inv_make} ${itemData.inv_model}` // Step 5: build display name
+
+  // Step 6: send data to view
+  res.render("./inventory/edit-inventory", {
+    title: "Edit " + itemName,
+    nav,
+    classificationList: classificationSelect,
+    message: "Welcome to the editor",
+    errors: null,
+    inv_id: itemData.inv_id,
+    inv_make: itemData.inv_make,
+    inv_model: itemData.inv_model,
+    inv_year: itemData.inv_year,
+    inv_description: itemData.inv_description,
+    inv_image: itemData.inv_image,
+    inv_thumbnail: itemData.inv_thumbnail,
+    inv_price: itemData.inv_price,
+    inv_miles: itemData.inv_miles,
+    inv_color: itemData.inv_color,
+    classification_id: itemData.classification_id
+  })
+}
+
+invCont.getDeleteInventory = async function (req, res) {
+  const inv_id = parseInt(req.params.inv_id);
+
+  try {
+    const itemData = await invModel.getVehicleById(inv_id) // This must return one vehicle
+
+    console.log("Fetched itemData:", itemData); // Add this
+
+    if (!itemData) {
+      req.flash("error", "Vehicle not found");
+      return res.redirect("/inv");
+    }
+
+    res.render("inventory/delete-inventory", {
+      title: `Delete ${itemData.inv_make} ${itemData.inv_model}`,
+      inv_id: itemData.inv_id,
+      inv_make: itemData.inv_make,
+      inv_model: itemData.inv_model,
+      inv_year: itemData.inv_year,
+      inv_price: itemData.inv_price,
+      message: req.flash("message")
+    });
+
+  } catch (err) {
+    console.error("Error loading delete page:", err);
+    res.status(500).send("Server error");
+  }
+};
+
 
 module.exports = invCont;
