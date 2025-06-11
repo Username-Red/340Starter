@@ -69,28 +69,42 @@ Util.buildClassificationGrid = async function(data){
  **************************************** */
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
 
-// Function to build vehivle detail page
-Util.buildVehicleDetail = function(vehicle) {
+Util.buildVehicleDetail = function(vehicle, loggedin) {
   const price = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-  }).format(vehicle.inv_price)
+  }).format(vehicle.inv_price);
 
-  const miles = new Intl.NumberFormat("en-US").format(vehicle.inv_miles)
+  const miles = new Intl.NumberFormat("en-US").format(vehicle.inv_miles);
+
+  let favoriteButton = "";
+
+  if (loggedin) {
+    favoriteButton = `
+      <form action="/favorites/add" method="POST">
+        <input type="hidden" name="inv_id" value="${vehicle.inv_id}">
+        <button type="submit">❤️ Add to Favorites</button>
+      </form>
+    `;
+  } else {
+    favoriteButton = `<p><a href="/account/login">Log in</a> to add to favorites</p>`;
+  }
 
   return `
-  <section class="vehicle-detail">
-    <img src="${vehicle.inv_image}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model}">
-    <div class="vehicle-info">
-      <h2>${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}</h2>
-      <h3>Price: ${price}</h3>
-      <p><strong>Description:</strong> ${vehicle.inv_description}</p>
-      <p><strong>Color:</strong> ${vehicle.inv_color}</p>
-      <p><strong>Mileage:</strong> ${miles} miles</p>
-    </div>
-  </section>
-  `
-}
+    <section class="vehicle-detail">
+      <img src="${vehicle.inv_image}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model}">
+      <div class="vehicle-info">
+        <h2>${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}</h2>
+        <h3>Price: ${price}</h3>
+        <p><strong>Description:</strong> ${vehicle.inv_description}</p>
+        <p><strong>Color:</strong> ${vehicle.inv_color}</p>
+        <p><strong>Mileage:</strong> ${miles} miles</p>
+      </div>
+      ${favoriteButton}
+    </section>
+  `;
+};
+
 
 
 /* **************************************

@@ -18,6 +18,8 @@ const session = require("express-session")
 const pool = require('./database/')
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
+const favoriteRoute = require("./routes/favoriteRoute")
+
 
 
 
@@ -76,6 +78,8 @@ app.use("/inv", inventoryRoute)
 
 // Account routes
 app.use("/account", accountRoute)
+
+app.use("/favorites", favoriteRoute)
 
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {

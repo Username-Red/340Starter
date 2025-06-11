@@ -247,3 +247,16 @@ WHERE inv_make = 'GM' AND inv_model = 'Hummer';
 UPDATE inventory
 SET inv_image = REPLACE(inv_image, '/images/', '/images/vehicles/'),
     inv_thumbnail = REPLACE(inv_thumbnail, '/images/', '/images/vehicles/');
+
+
+
+CREATE TABLE favorites (
+    favorite_id SERIAL PRIMARY KEY,
+    account_id INT NOT NULL,
+    inv_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    UNIQUE (account_id, inv_id),
+    FOREIGN KEY (account_id) REFERENCES account(account_id) ON DELETE CASCADE,
+    FOREIGN KEY (inv_id) REFERENCES inventory(inv_id) ON DELETE CASCADE
+);

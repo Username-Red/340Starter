@@ -115,6 +115,7 @@ async function accountLogin(req, res) {
 
       req.session.loggedin = true
       req.session.firstname = accountData.account_firstname
+      req.session.account_id = accountData.account_id
 
 
       console.log("Login successful, redirecting to /account/")
